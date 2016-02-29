@@ -262,7 +262,11 @@ function vc_update_remote_data_event() {
       'identifier' => 'wordpress',
       'version' => $wp_version
     ),
-    'packages' => $plugins
+    'packages' => $plugins,
+    'meta' => array(
+      'name' => get_bloginfo('name'),
+      'url' => get_site_url()
+    )
   );
 
   $res = vc_request(
