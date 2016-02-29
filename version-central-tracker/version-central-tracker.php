@@ -106,7 +106,7 @@ function vc_request(array $options, array $credentials) {
 
   $http = new WP_Http();
   return $http->request(
-    'http://data.version-central.vm',
+    'https://data.version-central.de',
     array_merge_recursive($default_args, $options)
   );
 
