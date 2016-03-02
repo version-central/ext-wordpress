@@ -11,13 +11,13 @@
 
 ### Manual
 
-Download the [current ZIP](https://github.com/version-central/ext-wordpress/archive/master.zip) and upload the plugin ZIP to your WordPress installation in your administration area.
+Download the [current ZIP](https://github.com/version-central/ext-wordpress/archive/master.zip) and upload the plugin ZIP to your WordPress installation in your wp-admin area.
 
 ## Configuration
 
-Open the plugin configuration under `Settings > VersionCentral` in your WordPress administration area and add your application token from the VersionCentral project. After verifying the token, information should appear for your application in the VersionCentral dashboard.
+Open the plugin configuration under `Settings > VersionCentral` in your wp-admin area and add your application token from the VersionCentral project. After verifying the token, information should appear for your application in the VersionCentral dashboard.
 
-You can also force an update to VersionCentral from your administration area.
+You can also force an update to VersionCentral from your wp-admin area.
 
 ## Contact
 
