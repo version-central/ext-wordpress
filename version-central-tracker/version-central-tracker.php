@@ -36,16 +36,8 @@ function vc_settings_init() {
 
   add_settings_field( 
     'vc_api_identifier', 
-    __('Identifier', 'version-central'), 
-    'vc_field_identifier_render', 
-    'vc_page', 
-    'vc_page_section' 
-  );
-
-  add_settings_field( 
-    'vc_api_token', 
-    __('Token', 'version-central'), 
-    'vc_field_token_render', 
+    __('Credentials', 'version-central'), 
+    'vc_field_credentials_render', 
     'vc_page', 
     'vc_page_section' 
   );
@@ -67,40 +59,23 @@ function vc_settings_init() {
 
 }
 
-function vc_field_identifier_render() { 
+function vc_field_credentials_render() { 
 
   $options = get_option('version_central');
   
   echo sprintf(
-    '<input type="text" name="version_central[api_identifier]" id="vc_api_identifier" value="%s" size="50" />',
-    $options['api_identifier']
-  )."\n";
-
-}
-
-function vc_field_token_render() { 
-
-  $options = get_option('version_central');
-  
-  echo sprintf(
-    '<input type="text" name="version_central[api_token]" id="vc_api_token" value="%s" size="50" />',
-    $options['api_token']
+    '<input type="text" name="version_central[api_credentials]" id="vc_api_credentials" value="%s" size="75" />',
+    $options['api_credentials']
   )."\n";
 
 }
 
 function vc_request(array $options, array $credentials) {
 
-  $authorization = sprintf(
-    '%s:%s',
-    $credentials['api_identifier'],
-    $credentials['api_token']
-  );
-
   $default_args = array(
     'headers' => array(
       'Accept' => 'application/vnd.version-central-v1+json',
-      'Authorization' => sprintf('Basic %s', base64_encode($authorization))
+      'Authorization' => sprintf('Basic %s', base64_encode($credentials['api_credentials']))
     )
   );
 
@@ -114,7 +89,9 @@ function vc_request(array $options, array $credentials) {
 
 function vc_verify_credentials_handler() {
 
-  $credentials = $_POST['version_central'];
+  $credentials = array(
+    'api_credentials' => $_POST['version_central']['api_credentials']
+  );
 
   $res = vc_request(
     array(
@@ -213,8 +190,7 @@ function vc_options_page() {
             data: {
               action: 'vc_verify_credentials',
               version_central: {
-                api_identifier: form.find('#vc_api_identifier').val(),
-                api_token: form.find('#vc_api_token').val()
+                api_credentials: form.find('#vc_api_credentials').val(),
               }
             },
             success: vc_valid_credentials,
@@ -279,6 +255,5 @@ function vc_update_remote_data_event() {
     ),
     get_option('version_central')
   );
-  var_dump(__FUNCTION__, $data, $res);
 
 }
