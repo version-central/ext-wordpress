@@ -1,11 +1,11 @@
 <?php
 
 /*
-Plugin Name: version-central.io tracker
-Description: [description]
+Plugin Name: VersionCentral Tracker
+Description: Behalte Deine Updates im Griff.
 Version: 0.0.1
-Author: root
-Author URI: http://localhost
+Author: VersionCentral
+Author URI: https://versioncentral.com
 */
 
 add_action('admin_menu', 'vc_add_admin_menu');
@@ -14,8 +14,8 @@ add_action('admin_init', 'vc_settings_init');
 function vc_add_admin_menu() { 
 
   add_options_page(
-    'version-central.io',
-    'version-central.io',
+    'VersionCentral',
+    'VersionCentral',
     'manage_options',
     'version-central',
     'vc_options_page'
@@ -25,7 +25,7 @@ function vc_add_admin_menu() {
 
 function vc_settings_init() { 
 
-  register_setting('vc_page', 'version_central');
+  register_setting('vc_page', 'versioncentral');
 
   add_settings_section(
     'vc_page_section', 
@@ -61,10 +61,10 @@ function vc_settings_init() {
 
 function vc_field_credentials_render() { 
 
-  $options = get_option('version_central');
+  $options = get_option('versioncentral');
   
   echo sprintf(
-    '<input type="text" name="version_central[api_credentials]" id="vc_api_credentials" value="%s" size="75" />',
+    '<input type="text" name="versioncentral[api_credentials]" id="vc_api_credentials" value="%s" size="75" />',
     $options['api_credentials']
   )."\n";
 
@@ -81,7 +81,7 @@ function vc_request(array $options, array $credentials) {
 
   $http = new WP_Http();
   return $http->request(
-    'https://data.version-central.de',
+    'https://data.versioncentral.com',
     array_merge_recursive($default_args, $options)
   );
 
@@ -90,7 +90,7 @@ function vc_request(array $options, array $credentials) {
 function vc_verify_credentials_handler() {
 
   $credentials = array(
-    'api_credentials' => $_POST['version_central']['api_credentials']
+    'api_credentials' => $_POST['versioncentral']['api_credentials']
   );
 
   $res = vc_request(
@@ -109,14 +109,14 @@ function vc_verify_credentials_handler() {
   );
 
   if (intval($res['response']['code']/100) === 2) {
-    update_option('version_central', $credentials);
+    update_option('versioncentral', $credentials);
 
     if (!wp_get_schedule('vc_update_remote_data_event')) {
       wp_schedule_event(time(), 'daily', 'vc_update_remote_data_event');
     }
     wp_schedule_single_event(time(), 'vc_update_remote_data_event');
   } else {
-    delete_option('version_central');
+    delete_option('versioncentral');
     wp_clear_scheduled_hook('vc_update_remote_data_event');
   }
 
@@ -128,7 +128,7 @@ function vc_options_page() {
 
   ?>
   <form id="verify-credentials">
-    <h1>version-central.io</h1>
+    <h1>VersionCentral</h1>
     
     <?php
 
@@ -189,7 +189,7 @@ function vc_options_page() {
             url: ajaxurl,
             data: {
               action: 'vc_verify_credentials',
-              version_central: {
+              versioncentral: {
                 api_credentials: form.find('#vc_api_credentials').val(),
               }
             },
@@ -253,7 +253,7 @@ function vc_update_remote_data_event() {
       ),
       'body' => json_encode($data)
     ),
-    get_option('version_central')
+    get_option('versioncentral')
   );
 
 }
