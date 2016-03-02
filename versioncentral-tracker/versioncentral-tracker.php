@@ -3,7 +3,8 @@
 /*
 Plugin Name: VersionCentral Tracker
 Description: Behalte Deine Updates im Griff.
-Version: 0.0.1
+License: MIT
+Version: 1.0.0
 Author: VersionCentral
 Author URI: https://versioncentral.com
 */
