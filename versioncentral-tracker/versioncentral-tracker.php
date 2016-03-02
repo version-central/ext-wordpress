@@ -23,23 +23,23 @@ function vc_add_admin_menu() {
 
 }
 
-function vc_settings_init() { 
+function vc_settings_init() {
 
   register_setting('vc_page', 'versioncentral');
 
   add_settings_section(
-    'vc_page_section', 
-    __('API-Credentials', 'version-central'), 
-    null, 
+    'vc_page_section',
+    __('API-Credentials', 'version-central'),
+    null,
     'vc_page'
   );
 
-  add_settings_field( 
-    'vc_api_identifier', 
-    __('Credentials', 'version-central'), 
-    'vc_field_credentials_render', 
-    'vc_page', 
-    'vc_page_section' 
+  add_settings_field(
+    'vc_api_identifier',
+    __('Credentials', 'version-central'),
+    'vc_field_credentials_render',
+    'vc_page',
+    'vc_page_section'
   );
 
   add_action(
@@ -59,10 +59,10 @@ function vc_settings_init() {
 
 }
 
-function vc_field_credentials_render() { 
+function vc_field_credentials_render() {
 
   $options = get_option('versioncentral');
-  
+
   echo sprintf(
     '<input type="text" name="versioncentral[api_credentials]" id="vc_api_credentials" value="%s" size="75" />',
     $options['api_credentials']
