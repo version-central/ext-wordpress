@@ -243,18 +243,24 @@ function vc_update_remote_data_event() {
 
   include ABSPATH.WPINC.'/version.php';
 
-  $plugins = array_map(
-      function($identifier, array $plugin) {
-        $plugin = array_change_key_case($plugin, CASE_LOWER);
-        return array(
-            'identifier' => dirname($identifier),
-            'version' => $plugin['version'],
-            'active' => is_plugin_active($identifier)
-        );
-      },
-      array_keys(get_plugins()),
-      array_values(get_plugins())
-  );
+    $plugins = array_map(
+        function($identifier, array $plugin) {
+            if (dirname($identifier) == '.' || $identifier === stristr(__FILE__, $identifier)) {
+                $name = str_replace('.php', '', basename($identifier));
+            } else {
+                $name = dirname($identifier);
+            }
+
+            $plugin = array_change_key_case($plugin, CASE_LOWER);
+            return array(
+                'identifier' => $name,
+                'version' => $plugin['version'],
+                'active' => is_plugin_active($identifier)
+            );
+        },
+        array_keys(get_plugins()),
+        array_values(get_plugins())
+    );
 
   $data = array(
       'application' => array(
