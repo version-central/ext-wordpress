@@ -18,7 +18,7 @@ function vc_add_admin_menu() {
       'VersionCentral',
       'VersionCentral',
       'manage_options',
-      'version-central',
+      'versioncentral',
       'vc_options_page'
   );
 
@@ -30,14 +30,14 @@ function vc_settings_init() {
 
   add_settings_section(
       'vc_page_section',
-      __('Information', 'version-central'),
+      __('Information', 'versioncentral'),
       null,
       'vc_page'
   );
 
   add_settings_field(
       'vc_api_identifier',
-      __('Token', 'version-central'),
+      __('Token', 'versioncentral'),
       'vc_field_credentials_render',
       'vc_page',
       'vc_page_section'
