@@ -55,7 +55,7 @@ function vc_settings_init() {
 
   add_action(
       'wp_ajax_vc_update_remote_data',
-      'vc_update_remote_data_event'
+      'vc_update_remote_data_handler'
   );
 
   add_action(
@@ -120,7 +120,7 @@ function vc_verify_credentials_handler() {
     if (!wp_get_schedule('vc_update_remote_data_event')) {
       wp_schedule_event(time(), 'daily', 'vc_update_remote_data_event');
     }
-    wp_schedule_single_event(time(), 'vc_update_remote_data_event');
+    vc_update_remote_data_event();
 
     echo "Verbindung erfolgreich.";
   } else {
@@ -290,6 +290,13 @@ function vc_update_remote_data_event() {
       get_option('versioncentral')
   );
 
+  return $res;
+}
+
+function vc_update_remote_data_handler() {
+
+  $res = vc_update_remote_data_event();
+
   header(
       sprintf(
           'HTTP/1.1 %d %s',
@@ -297,10 +304,10 @@ function vc_update_remote_data_event() {
           $res['response']['message']
       )
   );
-
   echo $res["body"];
 
   wp_die();
+
 }
 
 function vc_plugins_settings_link(array $links = array()) {
