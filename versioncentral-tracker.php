@@ -12,6 +12,11 @@ Author URI: https://versioncentral.com
 add_action('admin_menu', 'vc_add_admin_menu');
 add_action('admin_init', 'vc_settings_init');
 
+add_filter(
+  sprintf('plugin_action_links_%s', plugin_basename(__FILE__)),
+  'vc_plugins_settings_link'
+);
+
 function vc_add_admin_menu() {
 
   add_options_page(
@@ -296,4 +301,15 @@ function vc_update_remote_data_event() {
   echo $res["body"];
 
   wp_die();
+}
+
+function vc_plugins_settings_link(array $links = array()) {
+
+  $links['settings'] = sprintf(
+    '<a href="%s">%s</a>',
+    admin_url('options-general.php?page=versioncentral'),
+    __('Settings')
+  );
+  return $links;
+
 }
